@@ -1,0 +1,12 @@
+version: '2'
+services:
+  nginx:
+    image: nginx
+    volumes:
+      - "./docs:/usr/share/nginx/html:ro"
+      - "./docker_resources/default.template:/etc/nginx/conf.d/default.template:ro"
+    ports:
+      - "127.0.0.1:9999:9999"
+    environment:
+      - NGINX_PORT=9999
+    command: /bin/bash -c "envsubst '$$NGINX_PORT' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
